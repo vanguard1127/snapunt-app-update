@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "realSnapHunt",
+    "description": "A social App",
+    "slug": "realsnaphuntapp",
+    "privacy": "unlisted",
+    "sdkVersion": "36.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash1.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F2F6FA"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.snaphunt.ios",
+      "buildNumber": "3",
+      "supportsTablet": true,
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to capture/record challenge.",
+        "NSMicrophoneUsageDescription": "This app uses microphone to record your voice for video challenges",
+        "NSPhotoLibraryAddUsageDescription": "This app access photo library to save media",
+        "NSPhotoLibraryUsageDescription": "This app access photo library in order to upload profile pictures"
+      }
+    },
+    "android": {
+      "package": "com.snaphunt.android",
+      "versionCode": 2
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "snaphunt",
+            "project": "snaphunt-app",
+            "authToken": "e49dfbd2000548bd83898dc477dae2fc3adea64540d34c58939d13653e7d805b"
+          }
+        }
+      ]
+    }
+  }
+}
