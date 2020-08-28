@@ -6,14 +6,15 @@ import Colors from '../../../constants/Colors';
 import { userSelector } from '../../../store/selectors/UserSelector';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-paper';
+import normalize from 'react-native-normalize';
 
 class ProfileIcon extends React.Component {
   render() {
     return (
       this.props.user.avatar ? (
-        <Avatar.Image size={33} source={{ uri: this.props.user.avatar }} />
+        <Avatar.Image size={normalize(30)} source={{ uri: this.props.user.avatar }} />
       ) : (
-          <Icon type="Feather" name="user" style={{ color: this.props.focused ? Colors.backgroundColor : "#000" }} />
+          <Icon type="Feather" name="user" style={{fontSize: normalize(30), color: this.props.focused ? Colors.backgroundColor : "#000" }} />
         )
     );
   }

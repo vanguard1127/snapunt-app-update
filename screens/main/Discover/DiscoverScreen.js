@@ -32,16 +32,16 @@ import { withNavigationFocus } from 'react-navigation';
 import { discoverService } from '../../../services/DiscoverService';
 import CategoryList from './CategoryList';
 import NavigationService from '../../../services/NavigationService';
-
 import { LinearGradient } from 'expo-linear-gradient';
 import normalize from "react-native-normalize";
-import Swiper from 'react-native-swiper'
+import SwiperFlatList from 'react-native-swiper-flatlist';
+import authService from "../../../services/AuthService";
 var dim = Dimensions.get("window")
 let colorGetterFromProps = {};
 let darkMode = false;
 import { categories_system } from '../../../helpers/CommonMethods';
 import { nothing } from 'immer';
-
+import ApiService from "../../../services/ApiService";
 
 class DiscoverScreen extends React.Component {
 
@@ -75,12 +75,15 @@ class DiscoverScreen extends React.Component {
     refresh_loading: false,
     modalVisible: false,
     selectedCategory: "",
-    selectDiscoverData: []
+    selectDiscoverData: [],
+    topUser: []
   }
 
   componentDidMount() {
     const data = { offset: this.state.categoryOffset, limit: this.state.categoryLimit }
     this.props.getDiscoverData(data)
+    this.topUser()
+    
   }
 
   _refresh = () => {
@@ -112,7 +115,25 @@ class DiscoverScreen extends React.Component {
     BackHandler.addEventListener('hardwareBackPress', () => this.handleBackButtonClick());
   }
 
-
+  async topUser () {
+    // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXBpLnNuYXBodW50LmNhL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNTk4MDM0NjAxLCJuYmYiOjE1OTgwMzQ2MDEsImp0aSI6IkxSUGVXY1RXbjBFMm5jZngiLCJzdWIiOiI1ZGQ2NjQxZi1lYjUyLTQ4ODctYTA4My00NTlmNjE2OWU4Y2EiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Z5KdyG5yXU6P9AbGzLJwMAZodZ7vmltObff3p5M6nUk';
+    const token = await authService.getToken();
+    const apiclient = "https://api.snaphunt.ca/api/ranking";
+    console.log(token);
+    fetch(`${apiclient}?limit=10&offset=0`, { 
+        method: 'GET', 
+        headers: new Headers({
+          'Authorization': `Bearer ${token}`, 
+        }),
+        redirect: 'follow'
+      })
+        .then(response => response.json())
+        .then (result => {
+          this.setState({topUser: result})
+          console.log(this.state.topUser)
+        })
+        .catch(error => console.log("error", error))
+  }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', () => this.handleBackButtonClick());
@@ -323,60 +344,29 @@ class DiscoverScreen extends React.Component {
                 <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={this.clickLeaderboard}>
                   <Icon name="map-marker" type="FontAwesome" style={{ color: colorGetterFromProps.darkGrey, fontSize: normalize(25), marginRight: normalize(40) }} />
                 </TouchableOpacity>
-                <Swiper style={{ height: normalize(250) }} dot={<Text></Text>} activeDot={<Text></Text>} showsButtons={false}>
+  
+                <View style={{height: normalize(250)}}>
                   <View style={styles.slide}>
-                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <Image source={Avatar1} style={styles.AvatarStyle} />
-                      <Badge style={{ paddingLeft: 7, paddingRight: 7, width: normalize(80), height: 25, backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
-                        <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }}>Cory</Text>
-                      </Badge>
-                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>1.1k</Text>
-                      <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
-                    </View>
-                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <Image source={Avatar2} style={styles.AvatarStyle} />
-                      <Badge style={{ paddingLeft: 7, paddingRight: 7, width: normalize(80), height: 25, backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
-                        <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }}>Merry</Text>
-                      </Badge>
-                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>456</Text>
-                      <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
-                    </View>
-                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <Image source={Avatar3} style={styles.AvatarStyle} />
-                      <Badge style={{ paddingLeft: 7, paddingRight: 7, width: normalize(80), height: 25, backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
-                        <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }}>Alisha</Text>
-                      </Badge>
-                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>225</Text>
-                      <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
-                    </View>
+                  <SwiperFlatList
+                      index={0}
+                      data={this.state.topUser}
+                      keyExtractor={item => item.userId}
+                      renderItem={({ item, index }) => (
+                        <View key={index} style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", width: windowWidth / 3 }}>
+                          <TouchableOpacity onPress={() => this.props.navigation.navigate("FriendProfile", { owner: {"name": "Top Challenger","username": item.username,"id": item.userId,"avatar": item.avatar}})}>
+                            <Image source={{uri: item.avatar}} style={styles.AvatarStyle} />
+                          </TouchableOpacity>
+                          <Badge style={{ paddingLeft: 2, paddingRight: 2, width: normalize(80), height: normalize(25), backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
+                            <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }} numberOfLines={1}>{item.username}</Text>
+                          </Badge>
+                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>{item.total_eng}</Text>
+                          <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
+                      </View>
+                      )}
+                    />
                   </View>
-                  <View style={styles.slide}>
-                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <Image source={Avatar2} style={styles.AvatarStyle} />
-                      <Badge style={{ paddingLeft: 7, paddingRight: 7, width: normalize(80), height: 25, backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
-                        <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }}>Leigha</Text>
-                      </Badge>
-                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>765</Text>
-                      <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
-                    </View>
-                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <Image source={Avatar3} style={styles.AvatarStyle} />
-                      <Badge style={{ paddingLeft: 7, paddingRight: 7, width: normalize(80), height: 25, backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
-                        <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }}>Jordan</Text>
-                      </Badge>
-                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>4.3k</Text>
-                      <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
-                    </View>
-                    <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <Image source={Avatar1} style={styles.AvatarStyle} />
-                      <Badge style={{ paddingLeft: 7, paddingRight: 7, width: normalize(80), height: 25, backgroundColor: colorGetterFromProps.backgroundColor, borderWidth: 3, borderColor: "#717088", justifyContent: "center", alignItems: "center", padding: 5, alignSelf: "center", marginTop: -10 }}>
-                        <Text style={{ color: colorGetterFromProps.white, fontSize: normalize(15) }}>Messy</Text>
-                      </Badge>
-                      <Text style={{ justifyContent: "center", alignItems: "center", color: colorGetterFromProps.badgeColor }}>908</Text>
-                      <Icon type="EvilIcons" name="trophy" style={{ justifyContent: "center", alignItems: "center", color: "#DAA520", fontSize: 20 }} />
-                    </View>
-                  </View>
-                </Swiper>
+                </View>
+             
                 <SafeAreaView style={{ alignSelf: "center", paddingBottom: normalize(100) }}>
 
 
@@ -390,7 +380,7 @@ class DiscoverScreen extends React.Component {
                               <RefreshControl refreshing={this.state.refresh_loading} onRefresh={this._refresh} />
                             }
                             keyExtractor={item => item.title}
-                            data={this.state.selectedCategory == "" ? this.state.discoverData : this.state.selectDiscoverData/*this.state.discoverData.filter((x) => x.title = this.state.selectedCategory)*/}
+                            data={this.state.selectedCategory == "" ? this.state.discoverData : this.state.selectDiscoverData}
                             renderItem={({ item, index }) => {
                               return <CategoryList key={index} data={item} />
                             }}
@@ -444,7 +434,8 @@ const mapDispatchToProps = {
   getDiscoverData,
   setDiscoverSuccess,
   setCategorySuccess,
-  getCategoryData
+  getCategoryData,
+  
 };
 
 export default connect(

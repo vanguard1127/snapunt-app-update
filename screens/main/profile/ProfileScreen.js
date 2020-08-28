@@ -46,12 +46,24 @@ const headerRightIcon = (navigation, params) => {
                 fontSize: 25,
                 color: colorGetterFromProps.backgroundColor,
                 marginTop: normalize(10),
-                marginRight: normalize(80)
+                marginRight: normalize(20)
               }}
               />
-              { (params.notification_count > 0 ) && <Badge style={{ backgroundColor: "#fff", position: "absolute", top: 15, right: normalize(80)  }} size={13} > 
+              { (params.notification_count > 0 ) && <Badge style={{ backgroundColor: "#fff", position: "absolute", top: 15, right: normalize(20)  }} size={13} > 
                 {params.notification_count}
               </Badge>}
+          </TouchableOpacity>
+          <TouchableOpacity style={{height: "100%", justifyContent: "center"}}  onPress={() => navigation.navigate("Settings")}>
+            <Icon
+              type="Entypo"
+              name="dots-three-vertical"
+              style={{
+                fontSize: 20,
+                marginRight: normalize(20),
+                color: colorGetterFromProps.backgroundColor,
+                marginTop: normalize(10)
+              }}
+            />
           </TouchableOpacity>
         </View>
     )
@@ -193,16 +205,6 @@ class ProfileScreen extends React.Component {
                   <View></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", width: 30, width: 30 }} onPress={() => this.props.navigation.navigate("Settings")}>
-                  <Icon
-                    type="Entypo"
-                    name="dots-three-vertical"
-                    style={{
-                      fontSize: 20,
-                      color: colorGetterFromProps.backgroundColor
-                    }}
-                  />
-                </TouchableOpacity>
               </View>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: normalize(10) }}>

@@ -92,7 +92,7 @@ class ChallengeDetail extends React.Component {
         this.loading = false
       }
     } catch (err) {
-      alert(err)
+      console.log(err)
     }
   }
 
@@ -118,7 +118,7 @@ class ChallengeDetail extends React.Component {
         this.loading = false
       }
     } catch (err) {
-      alert(err)
+      console.log(err)
     }
   }
 
@@ -153,7 +153,8 @@ class ChallengeDetail extends React.Component {
         this.setState({ containerHeight: height, containerWidth: width })
       }}>
 
-        {this.state.showSwiper ? (<Viewport.Tracker>
+        {this.state.showSwiper ? (
+        <Viewport.Tracker>
           <Swiper scrollEventThrottle={16} horizontal={false} loadMinimalSize={2} loadMinimalLoader={<ActivityIndicator />} showsPagination={false} index={this.index} loadMinimal={true} key={this.state.data.length} onIndexChanged={(i) => this.handlePaging(i)} loop={false} >
             {this.state.data.map((slideData, index) => (
               <View key={index} style={{ flex: 1 }}>

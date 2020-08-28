@@ -85,7 +85,7 @@ class CategoryList extends React.Component {
                     data: [data.data[index]],
                     offset: index,
                     limit: this.state.limit,
-                    params: { category_id: item.category },
+                    params: { category_id: data.category },
                     apiCall: discoverService.getCategoryData,
                     index: index
                   }

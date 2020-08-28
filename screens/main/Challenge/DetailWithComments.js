@@ -14,12 +14,12 @@ import { connect } from 'react-redux';
 import { addClap } from "../../../store/actions/ChallengeActions"
 import { setRefreshLoading } from "../../../store/actions/LoaderAction"
 import { userSelector } from '../../../store/selectors/UserSelector';
-import { KeyboardAccessoryView } from 'react-native-keyboard-accessory'
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import { SafeAreaView } from 'react-navigation';
 import Colors from '../../../constants/Colors';
 import { Item, Input, Icon } from 'native-base';
-import { addComment, getComments } from "../../../store/actions/ChallengeActions"
-import moment from "moment"
+import { addComment, getComments } from "../../../store/actions/ChallengeActions";
+import moment from "moment";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { timeAgo } from "../../../helpers/CommonMethods"
 import { Avatar } from 'react-native-paper';
@@ -83,6 +83,7 @@ class DetailWithComments extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ ...styles.container }}>
+        <View style={styles.contentContainer}>
         {this.state.loading ? (<Loader />) : (<ScrollView
           style={{ flex: 1, backgroundColor: colorGetterFromProps.diffrentBack }}
           refreshControl={
@@ -119,6 +120,7 @@ class DetailWithComments extends React.Component {
             </View>
             </KeyboardAvoidingView>
 
+        </View>
       </SafeAreaView>
     );
   }
@@ -157,42 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorGetterFromProps.white,
-  },
-  postContainer: {
-    flexDirection: "row",
-    marginTop: 25,
-    alignItems: "center"
-  },
-  descBox: {
-    flex: 1,
-    padding: 8,
-  },
-  clapBox: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  backgroundVideo: {
-    width: "100%",
-    flex: 1,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0
-  },
-  countBox: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-    paddingBottom: 5,
-  },
-  iconBox: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5
-  },
+  }, 
   comments: {
     flex: 1,
     paddingLeft: 10,

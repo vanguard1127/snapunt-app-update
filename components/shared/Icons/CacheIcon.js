@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
+import normalize from 'react-native-normalize';
 
 export default class CacheIcon extends React.Component {
   render() {
@@ -7,7 +8,7 @@ export default class CacheIcon extends React.Component {
       <Image
         source={require('../../../assets/images/cache.jpeg')}
         fadeDuration={0}
-        style={{width: 23, height: 23, resizeMode: "contain"}}
+        style={{width:normalize(30), height: normalize(30), resizeMode: "contain"}}
       />
     );
   }
