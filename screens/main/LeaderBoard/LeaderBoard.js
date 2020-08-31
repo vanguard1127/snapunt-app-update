@@ -6,7 +6,9 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
-    TouchableHighlight
+    TouchableHighlight,
+    Animated,
+  Easing,
 } from 'react-native';
 import { connect } from 'react-redux';
 import Colors from '../../../constants/Colors';
@@ -21,6 +23,7 @@ import MapView, { Marker } from 'react-native-maps';
 import NavigationService from '../../../services/NavigationService';
 let colorGetterFromProps = {};
 let darkMode = false;
+import TypeWriter from 'react-native-typewriter'
 
 class LeaderBoard extends React.Component {
 
@@ -54,22 +57,52 @@ class LeaderBoard extends React.Component {
             },
             userImage: { uri: 'https://cdn.wallpapersafari.com/47/75/i8cgUE.jpg' }
         }
-        ]
+        ],
+        fadeValue: new Animated.Value(0),
     }
 
-
-
+    componentDidMount(){
+        const that = this;
+        Animated.timing(that.state.fadeValue, {
+            toValue: 0.98,
+            duration:1500,
+            easing: Easing.ease
+        }).start();
+      }
+    
     clickProfile = () => {
         this.props.navigation.navigate('FriendProfile');
     }
 
     render() {
+        let delayMap = [
+            // increase delay by 100ms at index 4
+            { at: 1, delay: 50 },
+            // increase delay by 400ms following every '.' character
+            { at: '.', delay: 100 },
+            // decrease delay by 200ms following every '!' character
+            { at: /!/, delay: -200 }
+          ]
         const windowWidth = Dimensions.get('window').width;
         const windowHeight = Dimensions.get('window').height;
         const image = { uri: "https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-3/img/user-13.005c80e1.jpg" };
         return (
             <View style={styles.container}>
-                <View style={styles.StickToTop}>
+                <Animated.View style={[styles.StickToWhole,{
+                    backgroundColor: "#000",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: 1,
+                    opacity: this.state.fadeValue 
+                }]}>
+                    <TouchableOpacity style={{ flexDirection: "column", justifyContent: "center", alignItems: "center", position: "absolute", top: normalize(18), left: 0, padding: normalize(10) }} onPress={() => {
+                            NavigationService.goBack()
+                        }}>
+                        <Icon name="back" type="AntDesign" style={{ color: colorGetterFromProps.backgroundColor, fontSize: 25 }} />
+                    </TouchableOpacity>
+                     <TypeWriter delayMap={delayMap} typing={1} style={{fontSize: normalize(45), color: Colors.white}}>Coming Soon ...</TypeWriter>
+                </Animated.View>
+                 {/* <View style={styles.StickToTop}>
                     <View style={{
                         flex: 1,
                         justifyContent: 'flex-start',
@@ -118,7 +151,7 @@ class LeaderBoard extends React.Component {
                             </View>
                         </Marker>
                     ))}
-                </MapView>
+                </MapView> */}
             </View>
         );
     }
@@ -147,9 +180,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: "#000"
     },
     mapStyle: {
         width: Dimensions.get('window').width,
@@ -177,4 +208,16 @@ const styles = StyleSheet.create({
         width: "100%",
         zIndex: 999
     },
+    StickToWhole: {
+        padding: normalize(10),
+        backgroundColor: "transparent",
+        color: "#000",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
+        position: 'absolute',
+        width: "100%",
+        zIndex: 9999
+    }
 });

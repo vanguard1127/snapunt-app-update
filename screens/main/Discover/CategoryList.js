@@ -55,7 +55,6 @@ class CategoryList extends React.Component {
         discoverService.getCategoryData(data).then((resp) => {
           this.appendCategoryData(resp.data)
         })
-        this.setState({categoryOffset: 8 })
         this.onEndReachedCalledDuringMomentum = true
       }
     }
@@ -64,7 +63,6 @@ class CategoryList extends React.Component {
   render() {
     var data = this.state.data
     return (<View style={{ padding: 10 }}>
-      
       <TouchableOpacity onPress={() => NavigationService.navigate("CategoryView", { cat_id: data.category, cat_name: data.title })} >
         <Badge style={{ backgroundColor: colorGetterFromProps.backgroundColor, justifyContent: "center", alignItems: "center", alignSelf: "center", marginTop: normalize(10), width: normalize(150) }}>
           <Text style={{ color: Colors.white }}>{data.title}</Text>
@@ -100,11 +98,9 @@ class CategoryList extends React.Component {
             this.onEndReachedCalledDuringMomentum = false
           }}
           ListFooterComponent={() => (
-            this.state.dataEnd != false >= 0 ? <Button style={styles.morePosts} onPress={() => NavigationService.navigate("CategoryView", { cat_id: data.category, cat_name: data.title })}>
-            <Text style={{ color: "#7C7C92" }}>Load more challenges</Text>
-          </Button> : <Button style={styles.morePosts} >
-            <Text style={{ color: "#7C7C92" }}>No more challenges </Text>
-          </Button>
+            <Button style={styles.morePosts} onPress={() => NavigationService.navigate("CategoryView", { cat_id: data.category, cat_name: data.title })}>
+              <Text style={{ color: "#7C7C92" }}>Load more challenges</Text>
+            </Button>  
           )}
           ListEmptyComponent={
             this.state.categoryLoading ? (

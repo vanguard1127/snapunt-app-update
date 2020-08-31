@@ -46,55 +46,56 @@ class ViewFollowers extends React.Component {
     userId: this.props.navigation.getParam("userId", null),
   }
 
-  componentDidMount() {
+  componentDidMount(){
     this.props.getFollowers({ limit: 10, offset: 0, userId: this.state.userId })
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.success) {
-      if (props.followers.length == 0) {
-        this.setState({ data: [...this.state.data, ...props.followers], loading: false, dataEnd: true })
-      } else {
-        this.setState({ data: [...this.state.data, ...props.followers], loading: false, limit: this.state.limit, offset: (this.state.offset + 10) })
+  UNSAFE_componentWillReceiveProps(props){
+      if(props.success){
+        if(props.followers.length == 0){
+          this.setState({ data: [...this.state.data, ...props.followers], loading: false, dataEnd: true })
+        }else{
+          this.setState({ data: [...this.state.data, ...props.followers], loading: false, limit: this.state.limit, offset: (this.state.offset + 10) })
+        }
+        this.props.getFollowersSuccess(false)
       }
-      this.props.getFollowersSuccess(false)
-    }
   }
 
-  loadMore() {
-    if (this.state.dataEnd == false && !(this.state.data.length < 10)) {
+  loadMore(){
+    if(this.state.dataEnd == false && !(this.state.data.length < 10) ){
       const data = { offset: this.state.offset, limit: this.state.limit, userId: this.state.userId }
       this.props.getFollowers(data)
-      this.setState({ loading: true })
+      this.setState({loading: true})
     }
   }
 
-  handleFollow(uuid, is_private, type = "follow") {
+  handleFollow(uuid, is_private, type = "follow"){
     let updatedFlatList = []
     this.props.follow(uuid)
 
     updatedFlatList = this.state.data.map((item) => {
-      if (item.owner.id == uuid) {
-        if (type == "follow") {
-          item.follow_status = is_private ? "pending" : "active"
-        } else {
-          item.follow_status = null
+        if(item.owner.id == uuid){
+            if(type == "follow"){
+              item.follow_status = is_private ? "pending" : "active"
+            }else{
+              item.follow_status = null
+            }
         }
-      }
-      return item
+        return item
     })
 
-    this.setState({ is_private: is_private, data: updatedFlatList })
+    this.setState({is_private: is_private, data: updatedFlatList})
   }
 
-  gotToFriendProfile(owner) {
-    this.props.navigation.navigate("FriendProfile", { owner: owner })
+  gotToFriendProfile(owner){
+    this.props.navigation.navigate("FriendProfile", {owner: owner} )
   }
 
   showActionSheet = (followObj) => {
     this.setState({ followObj: followObj })
     this.ActionSheet.show()
   }
+
 
   render() {
     return (
@@ -111,7 +112,7 @@ class ViewFollowers extends React.Component {
                 </Left>
                 <Body>
                   <TouchableOpacity onPress={() => this.gotToFriendProfile(item.owner)} >
-                    <Text style={{ fontSize: 16, fontWeight: "bold", olor: Colors.violetXblue }} >{item.owner.name}</Text>
+                    <Text style={{ fontSize: 16, fontWeight: "bold", color: Colors.violetXblue }} >{item.owner.name}</Text>
                     <Text style={{ color: Colors.violetXblue }} note>{item.owner.username}</Text>
                   </TouchableOpacity>
                 </Body>

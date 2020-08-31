@@ -28,12 +28,12 @@ import { addPrefix } from '../../../helpers/CommonMethods';
 import normalize from 'react-native-normalize';
 let colorGetterFromProps = {};
 let darkMode = false;
+
 class FriendProfile extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
     return {
-      header: null
+      headerShown: false
     }
   };
 
@@ -49,15 +49,14 @@ class FriendProfile extends React.Component {
     offset: 0,
     refresh: false,
     owner: this.props.navigation.getParam("owner", null),
-    title: "",
-    options: [],
-    actionType: null,
+    title : "",
+    options : [],
+    actionType : null,
     challengeType: 0,
-    second: false,
-    tabChange: 0
+    second: false
   }
 
-  toggleChallengeType(type) {
+  toggleChallengeType(type){
     var profileData = this.state.profileData
     profileData.challenges = []
     this.setState({
@@ -67,14 +66,14 @@ class FriendProfile extends React.Component {
       dataEnd: false,
       profileData: profileData
     })
-    this.props.getFriendProfile({ limit: this.state.limit, offset: 0, profileId: this.state.owner.id, type: type, second: this.state.second })
+    this.props.getFriendProfile({limit: this.state.limit, offset: 0, profileId: this.state.owner.id, type: type, second: this.state.second})
   }
 
-  componentDidMount() {
-    this.props.getFriendProfile({ limit: this.state.limit, offset: this.state.offset, profileId: this.state.owner.id, type: this.state.challengeType, second: this.state.second })
+  componentDidMount(){
+    this.props.getFriendProfile({limit: this.state.limit, offset: this.state.offset, profileId: this.state.owner.id, type: this.state.challengeType, second: this.state.second})
   }
 
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(){
     // StatusBar.setBarStyle('dark-content', true);
   }
 
@@ -83,9 +82,9 @@ class FriendProfile extends React.Component {
   //   this.props.getProfile(false)
   // }
 
-  loadMore() {
+  loadMore(){
     if (!this.onEndReachedCalledDuringMomentum) {
-      if (this.state.dataEnd == false) {
+      if(this.state.dataEnd == false){
         const data = { offset: this.state.offset, limit: this.state.limit, profileId: this.state.owner.id, type: this.state.challengeType, second: this.state.second }
         this.props.getFriendProfile(data)
         this.onEndReachedCalledDuringMomentum = true;
@@ -93,46 +92,44 @@ class FriendProfile extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.success) {
-      if (this.state.offset == 0 && !this.state.second) {
-        if (props.profileData.challenges.length == 0) {
+    UNSAFE_componentWillReceiveProps(props){
+    if(props.success){
+      if(this.state.offset == 0 && !this.state.second){
+        if(props.profileData.challenges.length == 0){
           this.setState({ profileData: props.profileData, loading: false, dataEnd: true, second: true })
-        } else {
+        }else{
           this.setState({ profileData: props.profileData, limit: this.state.limit, offset: (this.state.offset + 20), second: true })
         }
         this.props.navigation.setParams({
-          username: this.state.owner.username
+            username: this.state.owner.username
         })
-      } else {
+      }else{
         var profileData = this.state.profileData
-        profileData["challenges"] = [...this.state.profileData.challenges, ...props.profileData]
-        if (props.profileData.length < 20) {
-          this.setState({ profileData: profileData, offset: (this.state.offset + 20), refreshLoading: false, loading: false, dataEnd: true })
-        } else {
-          this.setState({ profileData: profileData, offset: (this.state.offset + 20), refreshLoading: false })
-        }
+          profileData["challenges"] = [...this.state.profileData.challenges, ...props.profileData]
+          if(props.profileData.length < 20){
+            this.setState({profileData: profileData, offset: (this.state.offset + 20), refreshLoading: false, loading: false, dataEnd: true})
+          }else{
+            this.setState({ profileData: profileData, offset: (this.state.offset + 20), refreshLoading: false })
+          }
       }
       this.props.getfriendProfileSuccess(false)
-    }
+      }
 
-
-
-    if (this.state.owner && this.state.owner.id != props.navigation.getParam("owner").id) {
-      this.setState({
-        owner: props.navigation.getParam("owner"),
-        offset: 0,
-        loading: true,
-        second: false,
-        dataEnd: false,
-        profileData: {
-          followers_count: 0,
-          followings_count: 0,
-          points: 0
-        }
-      })
-      this.props.getFriendProfile({ limit: this.state.limit, offset: 0, profileId: props.navigation.getParam("owner").id, type: this.state.challengeType, second: false })
-    }
+      if(this.state.owner && this.state.owner.id != props.navigation.getParam("owner").id){
+        this.setState({
+          owner: props.navigation.getParam("owner"),
+          offset: 0,
+          loading: true,
+          second: false,
+          dataEnd: false,
+          profileData: {
+            followers_count: 0,
+            followings_count: 0,
+            points: 0
+          }
+        })
+        this.props.getFriendProfile({limit: this.state.limit, offset: 0, profileId: props.navigation.getParam("owner").id, type: this.state.challengeType, second: false})
+      }
     //   if(props.navigation.getParam("refresh") != undefined){
     //       this.props.getProfile({limit: this.state.limit, offset: 0, profileId: this.state.profileId})
     //       this.props.navigation.setParams({ refresh: false })
@@ -145,30 +142,30 @@ class FriendProfile extends React.Component {
   }
 
   handleFollow = (type) => {
-    var { profileData } = this.state
+    var {profileData} = this.state
     this.props.follow(this.state.owner.id)
-    if (type == "unfollow") {
+    if(type == "unfollow"){
       profileData["request_status"] = null
-    } else if (type == "follow") {
+    }else if (type == "follow"){
       profileData["request_status"] = profileData.is_private ? "pending" : "active"
-    } else if (type == "sent") {
+    }else if (type == "sent"){
       profileData["request_status"] = null
     }
     this.setState({ profileData: profileData })
   }
 
-  getActionsSheet = ({ type }) => {
+  getActionsSheet = ({type}) => {
 
     var actionType = type
     var title = ""
     var options = []
 
-    if (type == "unfollow") {
-      title = 'Do you want to unfollow ' + this.state.owner.username + '?'
-      options = ['Yes', 'No']
-    } else if (type == "sent") {
-      title = 'Do you want to cancel request for ' + this.state.owner.username + '?'
-      options = ['Yes', 'No']
+    if(type == "unfollow"){
+      title = 'Do you want to unfollow '+this.state.owner.username+'?'
+      options = ['Yes',  'No']
+    }else if (type == "sent"){
+      title = 'Do you want to cancel request for '+this.state.owner.username+'?'
+      options = ['Yes',  'No']
     }
     // console.log(title, options)
     this.setState({ actionType: actionType, title: title, options: options })
@@ -176,7 +173,6 @@ class FriendProfile extends React.Component {
       this.ActionSheet.show()
     }, 100);
   }
-
   render() {
     var { user } = this.props
     return (
@@ -242,8 +238,6 @@ class FriendProfile extends React.Component {
           style={{ width: "100%", paddingBottom: normalize(100) }}
           contentContainerStyle={{ alignItems: "center" }}
           renderItem={({ item, index }) => (
-            
-              
                 <PostBoxProfile
                   detailData={
                     {
@@ -265,10 +259,10 @@ class FriendProfile extends React.Component {
 
               <View style={{ padding: normalize(30), marginTop: normalize(200) }}>
                 <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate("Followers")} >
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate("Followers", {userId: this.state.owner.id})}  >
                     <Text style={{ fontSize: normalize(20), color: colorGetterFromProps.backgroundColor, marginTop: normalize(10) }}>{this.state.profileData.followers_count}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate("Followings")} >
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate("Followings", {userId: this.state.owner.id})} >
                     <Text style={{ fontSize: normalize(20), color: colorGetterFromProps.backgroundColor, marginTop: normalize(10) }}>{this.state.profileData.followings_count}</Text>
                   </TouchableOpacity>
                   <Text style={{ fontSize: normalize(20), color: colorGetterFromProps.backgroundColor, marginTop: normalize(10) }}>{this.state.profileData.points}</Text>
@@ -305,9 +299,6 @@ class FriendProfile extends React.Component {
           onEndReachedThreshold={0.5}
           onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
         />
-
-
-
         <ActionSheet
           ref={o => this.ActionSheet = o}
           title={this.state.title}
@@ -316,7 +307,6 @@ class FriendProfile extends React.Component {
           destructiveButtonIndex={0}
           onPress={(index) => { index == 0 && this.handleFollow(this.state.actionType) }}
         />
-
       </View>
     );
   }
@@ -344,25 +334,6 @@ export default connect(
 )(FriendProfile);
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flexGrow: 1,
-    alignItems: "center",
-    // borderColor: "red",
-    // borderWidth: 1,
-  },
-  followContainer: {
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  tabContainer: {
-    flexDirection: "row",
-    borderTopColor: "lightgrey",
-    borderBottomColor: "lightgrey",
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
-    marginTop: 15,
-    padding: 10,
-  },
   container: {
     flex: 1
   },

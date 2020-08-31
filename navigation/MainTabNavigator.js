@@ -131,7 +131,7 @@ const HomeStack = createStackNavigator({
   },
 },
   {
-    unmountInactiveRoutes: true,
+    unmountInactiveRoutes:false,
     defaultNavigationOptions: ({ navigation }) => {
       // const rightIcon = addHeaderRightNavigator(navigation)
       return {
@@ -310,7 +310,7 @@ const ChallengeStack = createStackNavigator({
   },
 },
   {
-    unmountInactiveRoutes: true
+    unmountInactiveRoutes:false
   });
 
 ChallengeStack.navigationOptions = ({ navigation }) => {
@@ -409,7 +409,7 @@ const CameraStack = createStackNavigator({
   },
 },
   {
-    unmountInactiveRoutes: true,
+    unmountInactiveRoutes:false,
     animationEnabled: false,
     defaultNavigationOptions: ({ navigation }) => {
       // const rightIcon = addHeaderRightNavigator(navigation)
@@ -670,7 +670,7 @@ const CacheStack = createStackNavigator({
   },
 },
 {
-  unmountInactiveRoutes: true,
+  unmountInactiveRoutes:false,
   animationEnabled: false,
 }
 );

@@ -8,7 +8,9 @@ import {
   RefreshControl,
   Platform,
   StatusBar,
-  KeyboardAvoidingView
+  Keyboard,
+  KeyboardAvoidingView,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addClap } from "../../../store/actions/ChallengeActions"
@@ -47,6 +49,27 @@ class DetailWithComments extends React.Component {
 
   componentDidMount() {
     this.props.getComments("?post_id=" + this.state.post_id)
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide,
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({comment: " "})
+  }
+
+  _keyboardDidHide = () => {
+    console.log('Keyboard Hidden');
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -83,43 +106,55 @@ class DetailWithComments extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ ...styles.container }}>
+        <StatusBar hidden={true}/>
         <View style={styles.contentContainer}>
-        {this.state.loading ? (<Loader />) : (<ScrollView
-          style={{ flex: 1, backgroundColor: colorGetterFromProps.diffrentBack }}
-          refreshControl={
-            <RefreshControl refreshing={this.props.refreshLoader} onRefresh={() => this._onRefresh()} />
-          } >
-          <View style={styles.comments} >
-            {this.state.comments.map((comment, index) => {
-              return <View key={index} style={styles.commentRow} >
-                <Avatar.Image style={styles.avatar} size={40} source={{ uri: comment.avatar }} />
-                <View style={{ flexShrink: 1 }}>
-                  <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }} >
-                    <Text style={{ fontWeight: "bold" }} >{comment.username}</Text>
-                    <Text style={{ fontSize: 12, color: "grey" }} >{timeAgo(comment.ts)}</Text>
+          {this.state.loading ? (<Loader />) : (<ScrollView
+            style={{ flex: 1, backgroundColor: colorGetterFromProps.diffrentBack }}
+            refreshControl={
+              <RefreshControl refreshing={this.props.refreshLoader} onRefresh={() => this._onRefresh()} />
+            } >
+            <View style={styles.comments} >
+              {this.state.comments.map((comment, index) => {
+                return <View key={index} style={styles.commentRow} >
+                  <Avatar.Image style={styles.avatar} size={40} source={{ uri: comment.avatar }} />
+                  <View style={{ flexShrink: 1 }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }} >
+                      <Text style={{ fontWeight: "bold" }} >{comment.username}</Text>
+                      <Text style={{ fontSize: 12, color: "grey" }} >{timeAgo(comment.ts)}</Text>
+                    </View>
+                    <Text style={{ color: colorGetterFromProps.darkGrey }} >{comment.comment}</Text>
                   </View>
-                  <Text style={{ color: colorGetterFromProps.darkGrey }} >{comment.comment}</Text>
                 </View>
-              </View>
-            })}
-          </View>
-        </ScrollView>)}
-
-        
-            <KeyboardAvoidingView behavior={Platform.select({android: undefined, ios: 'padding'})} keyboardVerticalOffset={Platform.select({ios: 60, android: 500})}>
-               
-              <View style={{backgroundColor: colorGetterFromProps.white}}>
+              })}
+            </View>
+          </ScrollView>)}
+          {Platform.OS === 'ios' ? <KeyboardAccessoryView alwaysVisible={true} inSafeAreaView={true} avoidKeyboard={true} androidAdjustResize={false}>
+            <View style={{backgroundColor: colorGetterFromProps.white}}>
               <Icon name="dots-three-horizontal" type="Entypo" size={15} style={{ color: Colors.violetXblue, alignSelf: "flex-end", marginRight: normalize(30) }} />
               <View style={{ alignSelf: "center", height: 3, width: normalize(150), backgroundColor: Colors.violetXblue, borderRadius: 7, marginBottom: normalize(20) }}></View>
               <View style={styles.textInputView}>
-              <Item rounded style={{ flexShrink: 1, flexGrow: 1,borderRadius: 50,fontSize: 16,marginRight: 10,textAlignVertical: 'top',backgroundColor: "rgba(33,34,51,0.5)" }} >
-                <Input placeholder='Add a comment...' placeholderTextColor="white" style={{ paddingLeft: 10,fontSize: 14, height: 40, color: Colors.white }} value={this.state.comment} onChangeText={(val) => this.handleChange(val)} />
-                {this.state.active ? <TouchableOpacity onPress={() => this.submitComment()} ><Icon size={15} style={{ marginRight: 10,  color: "#33B2FF" }}name="paper-plane" type="Entypo" /></TouchableOpacity> : <Icon size={15} style={{ color: Colors.white, marginRight: 10 }}  name="paper-plane" type="Entypo" />}
-              </Item>
+                <Item rounded style={{ flexShrink: 1, flexGrow: 1,borderRadius: 50,fontSize: 16,marginRight: 10,textAlignVertical: 'top',backgroundColor: "rgba(33,34,51,0.5)" }} >
+                  <Input placeholder='Add a comment...' placeholderTextColor="white" style={{ paddingLeft: 10,fontSize: 14, height: 40, color: Colors.white }} value={this.state.comment} onChangeText={(val) => this.handleChange(val)} />
+                  {this.state.active ? <TouchableOpacity onPress={() => this.submitComment()} ><Icon size={15} style={{ marginRight: 10,  color: "#33B2FF" }}name="paper-plane" type="Entypo" /></TouchableOpacity> : <Icon size={15} style={{ color: Colors.white, marginRight: 10 }}  name="paper-plane" type="Entypo" />}
+                </Item>
+              </View>
             </View>
-            </View>
-            </KeyboardAvoidingView>
-
+          </KeyboardAccessoryView> : (
+          <KeyboardAccessoryView alwaysVisible={true} inSafeAreaView={true} avoidKeyboard={true} androidAdjustResize={false}>
+            
+            <View style={{backgroundColor: colorGetterFromProps.white}}>
+              <Icon name="dots-three-horizontal" type="Entypo" size={15} style={{ color: Colors.violetXblue, alignSelf: "flex-end", marginRight: normalize(30) }} />
+              <View style={{ alignSelf: "center", height: 3, width: normalize(150), backgroundColor: Colors.violetXblue, borderRadius: 7, marginBottom: normalize(20) }}></View>
+              <View style={styles.textInputView}>
+                <Item rounded style={{ flexShrink: 1, flexGrow: 1,borderRadius: 50,fontSize: 16,marginRight: 10,textAlignVertical: 'top',backgroundColor: "rgba(33,34,51,0.5)" }} >
+                  <Input placeholder='Add a comment...' placeholderTextColor="white" style={{ paddingLeft: 10,fontSize: 14, height: 40, color: Colors.white }} value={this.state.comment} onChangeText={(val) => this.handleChange(val)} />
+                  {this.state.active ? <TouchableOpacity onPress={() => this.submitComment()} ><Icon size={15} style={{ marginRight: 10,  color: "#33B2FF" }}name="paper-plane" type="Entypo" /></TouchableOpacity> : <Icon size={15} style={{ color: Colors.white, marginRight: 10 }}  name="paper-plane" type="Entypo" />}
+                </Item>
+              </View>
+            </View> 
+          </KeyboardAccessoryView>
+          )
+          }   
         </View>
       </SafeAreaView>
     );
@@ -159,6 +194,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorGetterFromProps.white,
+    // minHeight: Math.round(Dimensions.get('window').height)
+
   }, 
   comments: {
     flex: 1,
@@ -193,5 +230,15 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: 8
-  }
+  },
+  StickToBottom: {
+    alignSelf: "center",
+    position: 'absolute',
+    width: "100%",
+    height: normalize(130),
+    bottom: 0,
+    zIndex: 999,
+    alignItems: "center",
+    justifyContent: "center"
+  },
 });
