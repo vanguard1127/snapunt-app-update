@@ -162,7 +162,24 @@ class HomeBox extends React.Component {
                 <Text style={{ right: 0, fontSize: normalizeFont(15), color: Colors.light_ash_white, marginTop: normalize(10, "height"), marginBottom: normalize(10, "height"), width: normalize(280, "height"), paddingRight: normalize(20, "width") }} numberOfLines={3} ellipsizeMode='tail'>{props.ch.desc}</Text>
               </View>
               <View style={{ padding: 10 }} >
+                <View style={{ alignItems: "flex-end", marginBottom: 10 }} >
 
+                  <View style={{ alignItems: "center" }} >
+                    {/* 
+                      <TouchableOpacity style={{marginBottom: 10}} onPress={() => ( this.setState({ modalVisible: true }) )} >
+                        <Avatar.Icon size={38} icon="share" style={{backgroundColor: Colors.backgroundColor}} color={"#fff"} />
+                      </TouchableOpacity> */}
+
+                    {!props.ch.is_featured && this.props.user.id == props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.ActionSheet.show() }} >
+                      <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
+                    </TouchableOpacity>}
+
+                    {!props.ch.is_featured && this.props.user.id != props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.FriendActionSheet.show() }} >
+                      <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
+                    </TouchableOpacity>}
+
+                  </View>
+                </View>
                 <View style={{ marginBottom: 20, width: "100%" }} >
                   {props.ch.is_featured == true && props.ch.featured_url && (<TouchableOpacity onPress={() => Linking.openURL(addPrefix(props.ch.featured_url))} ><Text style={{ color: "#fff", fontWeight: "bold", marginTop: 5 }} >
                     {addPrefix(props.ch.featured_url)}
