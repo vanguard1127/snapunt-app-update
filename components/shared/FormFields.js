@@ -5,62 +5,71 @@ import normalize from 'react-native-normalize';
 
 // import { TextInput } from 'react-native-paper';
 import { ErrorMessage } from 'formik';
-import Color from "../../constants/Colors"
-import { Picker, Icon, CheckBox, Textarea, Item, Input, ListItem, Left, Body, Switch } from 'native-base';
+import Color from '../../constants/Colors';
+import {
+  Picker,
+  Icon,
+  CheckBox,
+  Textarea,
+  Item,
+  Input,
+  ListItem,
+  Left,
+  Body,
+  Switch
+} from 'native-base';
 import Colors from '../../constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NavigationService from '../../services/NavigationService';
-import s from "../../constants/Form";
+import s from '../../constants/Form';
 
 export const CustomPicker = ({ field, form, ...props }) => {
-
   var pickerOrderWithSeason = [
-    "18",
-    "2",
-    "19",
-    "20",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-    "16",
-    "17"
+    '18',
+    '2',
+    '19',
+    '20',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17'
   ];
 
   var pickerOrder = [
-    "18",
-    "2",
-    "19",
-    "20",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-    "16",
+    '18',
+    '2',
+    '19',
+    '20',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16'
   ];
 
-  var customOrder = props.season1 ? pickerOrderWithSeason : pickerOrder
+  var customOrder = props.season1 ? pickerOrderWithSeason : pickerOrder;
 
   return (
-
     <View>
       <Picker
         mode="modal"
@@ -71,25 +80,46 @@ export const CustomPicker = ({ field, form, ...props }) => {
         selectedValue={form.values[field.name]}
         onValueChange={form.handleChange(field.name)}
         enabled={props.enable}
-        iosHeader={"Select One"}
-        style={{ color: Colors.white, width: "85%", marginLeft: "15%" }}
+        iosHeader={'Select One'}
+        style={{ color: Colors.white, width: '85%', marginLeft: '15%' }}
       >
-        <Picker.Item label={props.placeholder} value="" style={{ color: Colors.white }} />
+        <Picker.Item
+          label={props.placeholder}
+          value=""
+          style={{ color: Colors.white }}
+        />
 
-        {field.name == "category" ? (
-          customOrder.map((order, index) => {
-            return <Picker.Item key={index} style={{ color: Colors.white }} label={props.list[order].name} value={order} />
-          })) : (
-            Object.keys(props.list).map((key, index) => {
-              return <Picker.Item key={index} style={{ color: Colors.white }} label={props.list[key]} value={key} />
+        {field.name == 'category'
+          ? customOrder.map((order, index) => {
+              return (
+                <Picker.Item
+                  key={index}
+                  style={{ color: Colors.white }}
+                  label={props.list[order].name}
+                  value={order}
+                />
+              );
             })
-          )
-        }
-
+          : Object.keys(props.list).map((key, index) => {
+              return (
+                <Picker.Item
+                  key={index}
+                  style={{ color: Colors.white }}
+                  label={props.list[key]}
+                  value={key}
+                />
+              );
+            })}
       </Picker>
 
       <ErrorMessage
-        style={{color: Colors.redError, position: "absolute", top: normalize(47), left: normalize(5), fontSize: normalize(14)}}
+        style={{
+          color: Colors.redError,
+          position: 'absolute',
+          top: normalize(47),
+          left: normalize(5),
+          fontSize: normalize(14)
+        }}
         name={field.name}
         component={Text}
       />
@@ -99,29 +129,41 @@ export const CustomPicker = ({ field, form, ...props }) => {
 
 export const TextInputField = ({ field, form, ...props }) => {
   return (
-    <View >
+    <View>
       {props.nativeBase != undefined ? (
         <Item regular style={{ ...props.style, marginBottom: 5, marginTop: 5 }}>
-          <Input style={{ fontSize: 16, height: 40 }} placeholderTextColor="#fff" placeholder="something" onBlur={form.handleBlur(field.name)} onChangeText={form.handleChange(field.name)} value={field.value} />
-        </Item>
-
-      ) : (
-          <TextInput
-            mode="outlined"
-
-            style={{ ...props.style, height: 0, }}
-            value={field.value}
-            onChangeText={form.handleChange(field.name)}
+          <Input
+            style={{ fontSize: 16, height: 40 }}
+            placeholderTextColor="#fff"
+            placeholder="something"
             onBlur={form.handleBlur(field.name)}
-            theme={props.theme}
-            placeholderTextColor={Colors.textInputColor}
-            {...props}
+            onChangeText={form.handleChange(field.name)}
+            value={field.value}
           />
-        )}
+        </Item>
+      ) : (
+        <TextInput
+          mode="outlined"
+          style={{ ...props.style, height: 0 }}
+          value={field.value}
+          onChangeText={form.handleChange(field.name)}
+          onBlur={form.handleBlur(field.name)}
+          theme={props.theme}
+          placeholderTextColor={Colors.textInputColor}
+          {...props}
+        />
+      )}
       <View>
         <ErrorMessage
           style={{
-            color: Colors.redError, fontSize: normalize(15), marginTop: normalize(-13, "height"), marginBottom: normalize(2), marginLeft: normalize(5), borderTopColor: Colors.redError, borderTopWidth: 1, padding: 5
+            color: Colors.redError,
+            fontSize: normalize(15),
+            marginTop: normalize(-13, 'height'),
+            marginBottom: normalize(2),
+            marginLeft: normalize(5),
+            borderTopColor: Colors.redError,
+            borderTopWidth: 1,
+            padding: 5
           }}
           name={field.name}
           component={Text}
@@ -131,7 +173,7 @@ export const TextInputField = ({ field, form, ...props }) => {
   );
 };
 
-export const TextInputPaper = (props) => {
+export const TextInputPaper = props => {
   return (
     <View>
       <TextInput
@@ -159,7 +201,13 @@ export const CustomTextarea = ({ field, form, ...props }) => {
         disabled={props.disabled}
       />
       <ErrorMessage
-        style={{ color: Colors.redError, position: "absolute", top: normalize(47), left: normalize(5), fontSize: normalize(14) }}
+        style={{
+          color: Colors.redError,
+          position: 'absolute',
+          top: normalize(47),
+          left: normalize(5),
+          fontSize: normalize(14)
+        }}
         name={field.name}
         component={Text}
       />
@@ -189,7 +237,6 @@ export const FormikSwitch = ({ field, form, ...props }) => {
 export const CheckboxField = ({ field, form, ...props }) => {
   return (
     <View>
-
       <View style={styles.tcContainer}>
         <CheckBox
           style={{ marginRight: 20 }}
@@ -199,8 +246,10 @@ export const CheckboxField = ({ field, form, ...props }) => {
           }}
           {...props}
         />
-        <TouchableOpacity onPress={() => NavigationService.navigate("Terms")} >
-          <Text style={{ color: Colors.noticeText }} >I agree to Terms and Conditions</Text>
+        <TouchableOpacity onPress={() => NavigationService.navigate('Terms')}>
+          <Text style={{ color: Colors.noticeText }}>
+            I agree to Terms and Conditions
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -213,23 +262,29 @@ export const CheckboxField = ({ field, form, ...props }) => {
   );
 };
 
-export const RegularInput = (props) => (
+export const RegularInput = props => (
   <Item regular style={{ ...props.style, ...{ flexShrink: 1 } }}>
     <Icon style={{ fontSize: 14 }} type={props.family} name={props.icon} />
-    <Input disabled={props.disabled} style={{ fontSize: 14, height: 35 }} placeholder={props.placeholder} onFocus={props.onFocus} onChangeText={props.onChangeText} value={props.value} />
+    <Input
+      disabled={props.disabled}
+      style={{ fontSize: 14, height: 35 }}
+      placeholder={props.placeholder}
+      onFocus={props.onFocus}
+      onChangeText={props.onChangeText}
+      value={props.value}
+    />
   </Item>
-)
+);
 
 TextInputField.propTypes = {
   field: PropTypes.object,
   form: PropTypes.object
 };
 
-
 const styles = StyleSheet.create({
   tcContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 10,
     marginBottom: 20
   }
