@@ -36,7 +36,6 @@ class ChallengeService extends ApiService {
         formData.append('is_featured', data.featured);
         formData.append('featured_duration', data.duration);
         formData.append('featured_url', data.featured_url);
-        console.log("aaa");
         return this.apiClient.post(ENDPOINTS.SAVE_CHALLENGE, formData, {
           headers: {
               'content-type': 'multipart/form-data'

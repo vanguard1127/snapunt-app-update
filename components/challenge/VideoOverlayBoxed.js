@@ -64,7 +64,7 @@ const PRE_TRIGGER_RATIO = -0.3
               isLooping
               style={ {...styles.backgroundVideo, ...{height: height, borderRadius: props.rounded != undefined ? props.rounded : 0}} }
               usePoster={true}
-              onError={(err) => console.log(err)}
+              onError={(err) => console.log('error' + err)}
               onViewportEnter={() => this.handlePlaying(true)}
               onViewportLeave={() => this.handlePlaying(false)}
               preTriggerRatio={PRE_TRIGGER_RATIO}
@@ -75,8 +75,7 @@ const PRE_TRIGGER_RATIO = -0.3
     };
   }
 
-
-
+ 
   const styles = StyleSheet.create({
     backgroundVideo: {
       position: "absolute",

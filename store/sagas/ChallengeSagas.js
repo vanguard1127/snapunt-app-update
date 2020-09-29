@@ -7,7 +7,6 @@ import NavigationService from "../../services/NavigationService";
 
 export function* saveChallenge({ payload }) {
     try {
-      console.log('abced ');
       yield put(setLoader(true));
       // yield(put(setLoadingText("Posting Challenge")))
       var {data} = yield call(challengeService.saveChallenge , payload);

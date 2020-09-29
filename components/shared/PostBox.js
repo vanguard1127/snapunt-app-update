@@ -137,9 +137,8 @@ class HomeBox extends React.Component {
 
             <View ref={elem => this.vp = elem} style={{
               flex: 1, alignItems: "center", position: "absolute", bottom:normalize(20),
-            }}>
-
-              < View style={{ flexDirection: "row", padding: 10, justifyContent: "space-between" }} >
+            }}>               
+              <View style={{ flexDirection: "row", padding: 10, justifyContent: "space-between" }} >
                 <View style={{ flexDirection: "row" }} >
                   <Image source={{ uri: props.ch.owner.avatar }} style={{ height: normalize(40), width: normalize(40), borderRadius: 50 }} />
                   {/* <Image source={{uri: props.ch.avatar}} style={{resizeMode: "contain", borderWidth: 1, borderColor: "yellow"}} /> */}
@@ -177,7 +176,6 @@ class HomeBox extends React.Component {
                     {!props.ch.is_featured && this.props.user.id != props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.FriendActionSheet.show() }} >
                       <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
                     </TouchableOpacity>}
-
                   </View>
                 </View>
                 <View style={{ marginBottom: 20, width: "100%" }} >
@@ -190,7 +188,7 @@ class HomeBox extends React.Component {
                       <Text style={{ fontWeight: "bold", textDecorationLine: "underline", color: "white", fontSize: 12 }} >{props.ch.original_owner.username}</Text>
                     </TouchableOpacity>
                   </View>}
-                </View>
+                </View> 
                 <View style={{ width: normalize(250), marginLeft: normalize(20) }}>
                   <Social backgroundColorForModal={props.backgroundColorForSocial} data={props.ch} navigation={props.navigation} />
                 </View>
@@ -199,7 +197,7 @@ class HomeBox extends React.Component {
           </RespImageOverlay>
         ) : (
             <VideoOverlay detail={props.detail} home={props.home} height={height} width={width} source={props.ch.media} shouldPlay={shouldPlay} loadMedia={loadMedia} >
-              <View ref={elem => this.vp = elem} style={{ flex: 1, justifyContent: "space-between", width: "100%" }} >
+              <View ref={elem => this.vp = elem} style={{ flex: 1, justifyContent: "space-between",width: "100%", }} >
 
                 <View style={{ flexDirection: "row", padding: 10, justifyContent: "space-between", marginTop: StatusBar.currentHeight }} >
                   <View style={{ flexDirection: "row" }} >
@@ -219,24 +217,26 @@ class HomeBox extends React.Component {
 
                 <View style={{ padding: 10 }} >
 
-                  <View style={{ alignItems: "flex-end", marginBottom: 10 }} >
+                <View style={{width: '100%', alignItems: 'center'}}>
+                  <View style={{ alignItems: "flex-end", marginBottom: 10 ,width: normalize(250) }} >
 
-                    <View style={{ alignItems: "center" }} >
-                      {/* 
-                        <TouchableOpacity style={{marginBottom: 10}} onPress={() => ( this.setState({ modalVisible: true }) )} >
-                          <Avatar.Icon size={38} icon="share" style={{backgroundColor: Colors.backgroundColor}} color={"#fff"} />
-                        </TouchableOpacity> */}
+                  <View style={{ alignItems: "center" }} >
+                    {/* 
+                      <TouchableOpacity style={{marginBottom: 10}} onPress={() => ( this.setState({ modalVisible: true }) )} >
+                        <Avatar.Icon size={38} icon="share" style={{backgroundColor: Colors.backgroundColor}} color={"#fff"} />
+                      </TouchableOpacity> */}
 
-                      {!props.ch.is_featured && this.props.user.id == props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.ActionSheet.show() }} >
-                        <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
-                      </TouchableOpacity>}
+                    {!props.ch.is_featured && this.props.user.id == props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.ActionSheet.show() }} >
+                      <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
+                    </TouchableOpacity>}
 
-                      {!props.ch.is_featured && this.props.user.id != props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.FriendActionSheet.show() }} >
-                        <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
-                      </TouchableOpacity>}
+                    {!props.ch.is_featured && this.props.user.id != props.ch.owner.id && <TouchableOpacity onPress={() => { this.setState({ postUUID: props.ch.uuid }); this.FriendActionSheet.show() }} >
+                      <Icon fontSize={38} name="dots-three-horizontal" type="Entypo" style={{ color: "white" }} />
+                    </TouchableOpacity>}
 
-                    </View>
                   </View>
+                  </View> 
+                </View>
 
                   <View style={{ marginBottom: 20, width: "100%" }} >
                     <Text style={{ ...GlobalStyles.textShadow, ...{ fontSize: normalizeFont(14), marginBottom: 5, color: "white", fontWeight: "bold", lineHeight: 18, letterSpacing: 0.5 } }} >{props.ch.desc}</Text>
@@ -250,8 +250,11 @@ class HomeBox extends React.Component {
                       </TouchableOpacity>
                     </View>}
                   </View>
-
-                  <Social data={props.ch} navigation={props.navigation} />
+                  <View style={{width: '100%', bottom: normalize(20), alignItems: 'center'}}>
+                    <View style={{ width: normalize(250), marginLeft: normalize(20) }}>
+                      <Social data={props.ch} navigation={props.navigation} />                      
+                    </View>
+                  </View>
                 </View>
               </View>
             </VideoOverlay>

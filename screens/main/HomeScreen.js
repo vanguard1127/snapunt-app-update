@@ -166,7 +166,7 @@ class HomeScreen extends React.Component {
   //   // StatusBar.setBarStyle('light-content', true);
   // }
 
-  handlePaging(index) {
+  handlePaging(index) {    
     var data = this.state.homeData;
     if (data.length - 8 == index && !this.state.dataEnd && !this.loading) {
       // var lastFiveIndex = data.length - 5
@@ -348,7 +348,6 @@ class HomeScreen extends React.Component {
       </ParallaxSwiper> */}
 
         {this.state.focus ? (
-          <Viewport.Tracker>
             <View style={{ flex: 1 }}>
               <View style={styles.StickToTop}>
                 <Text
@@ -363,6 +362,7 @@ class HomeScreen extends React.Component {
                   SnΔpHunt
                 </Text>
               </View>
+              <Viewport.Tracker>
               <Swiper
                 scrollEventThrottle={16}
                 horizontal={false}
@@ -405,6 +405,7 @@ class HomeScreen extends React.Component {
                   </View>
                 ))}
               </Swiper>
+              </Viewport.Tracker>
               {/* {this.state.itemData.call(this)} */}
               {
                 <View
@@ -419,7 +420,7 @@ class HomeScreen extends React.Component {
                 </View>
               }
             </View>
-          </Viewport.Tracker>
+          
         ) : (
           <Loader />
         )}
