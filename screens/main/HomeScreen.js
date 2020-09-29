@@ -166,15 +166,9 @@ class HomeScreen extends React.Component {
   //   // StatusBar.setBarStyle('light-content', true);
   // }
 
-<<<<<<< HEAD
-  handlePaging(index) {    
-    var data = this.state.homeData;
-    if (data.length - 8 == index && !this.state.dataEnd && !this.loading) {
-=======
   handlePaging(index) {
     var data = this.state.homeData
     if ((data.length - 8) == index && !this.state.dataEnd && !this.loading) {
->>>>>>> d6bf014ce1babfb211605f10c2be7aabba58cf0c
       // var lastFiveIndex = data.length - 5
       //  if(lastFiveIndex == index){
       // run load more here
