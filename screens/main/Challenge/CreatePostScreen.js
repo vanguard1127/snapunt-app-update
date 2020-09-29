@@ -44,6 +44,7 @@ class CreatePostScreen extends React.Component {
     super(props);
     this.updateSaveChallengeRef = this.updateSaveChallengeRef.bind(this);
     this.updateDraftRef = this.updateDraftRef.bind(this);
+    console.log("CreatePostScreen constructor");
   }
 
   state = {
@@ -84,13 +85,16 @@ class CreatePostScreen extends React.Component {
       data["clearData"] = clearData
       data["hostAHunt"] = this.props.navigation.getParam("hostAHunt")
       if (data["hostAHunt"] != undefined) {
+        console.log("hostAHunt defined");
         delete data["clearData"]
         clearData.navigationData.posts.push(data)
         NavigationService.navigate(clearData.navigateTo, { title: clearData.navigationData.title, posts: clearData.navigationData.posts })
       } else {
+        console.log("hostAHunt undefined");
         this.props.saveChallenge(data)
       }
     } else {
+      console.log("subscriptionAlert")
       subscriptionAlert()
     }
     console.log("Submitted")
@@ -99,7 +103,7 @@ class CreatePostScreen extends React.Component {
   deleteDraft(data) {
     this.props.deleteDraft(data)
   }
-
+ 
   render() {
     var postData = this.props.navigation.getParam("postData")
 

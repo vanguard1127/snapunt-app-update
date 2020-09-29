@@ -7,6 +7,7 @@ import NavigationService from "../../services/NavigationService";
 
 export function* saveChallenge({ payload }) {
     try {
+      console.log('abced ');
       yield put(setLoader(true));
       // yield(put(setLoadingText("Posting Challenge")))
       var {data} = yield call(challengeService.saveChallenge , payload);
@@ -25,9 +26,9 @@ export function* saveChallenge({ payload }) {
           NavigationService.navigate("Home")
         }
     } catch (error) {
-        alert(err)
+        alert(error)
         console.log(error)
-      if (error.response.status === 400) {
+      if (error.response.status === 400) {        
         yield put(saveChallengeError(true));
       } else {
         yield put(setGlobalError(true));

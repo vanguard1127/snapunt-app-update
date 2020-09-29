@@ -1,10 +1,4 @@
-I have some question for now.
-I want to discuss with other messenger app. In upwork, outside chatting is not allowed. 
-Do you have skype? Or not? 
-Please give me other messenger to communicate fast.
-
 # README #
-
 
 This README would normally document whatever steps are necessary to get your application up and running.
 

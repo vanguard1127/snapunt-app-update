@@ -17,6 +17,7 @@ class ChallengeService extends ApiService {
   saveChallenge = (data) => {
 
     try{
+      console.log('save Challenge ' + JSON.stringify(data));
         let formData = new FormData();
         if (data.media) {
           const uri = data.media
@@ -35,6 +36,7 @@ class ChallengeService extends ApiService {
         formData.append('is_featured', data.featured);
         formData.append('featured_duration', data.duration);
         formData.append('featured_url', data.featured_url);
+        console.log("aaa");
         return this.apiClient.post(ENDPOINTS.SAVE_CHALLENGE, formData, {
           headers: {
               'content-type': 'multipart/form-data'
@@ -42,7 +44,9 @@ class ChallengeService extends ApiService {
       });
 
     }catch(err){
+      console.log('Save Challenge Catch')
         alert(err)
+
         console.log(err)
     }
     }
