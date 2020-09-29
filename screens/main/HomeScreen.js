@@ -350,8 +350,6 @@ class HomeScreen extends React.Component {
         })}
        
       </ParallaxSwiper> */}
-
-<<<<<<< HEAD
         {this.state.focus ? (
             <View style={{ flex: 1 }}>
               <View style={styles.StickToTop}>
@@ -429,42 +427,6 @@ class HomeScreen extends React.Component {
         ) : (
           <Loader />
         )}
-=======
-
-        {this.state.focus ? (<Viewport.Tracker>
-          <View style={{ flex: 1 }}>
-            <View style={styles.StickToTop}>
-              <Text style={{ fontSize: normalizeFont(38), fontWeight: "500", color: "rgba(255,255,255,0.8)", marginTop: normalize(15), fontStyle: "italic" }}>SnΔpHunt</Text>
-            </View>
-            <Swiper scrollEventThrottle={16} horizontal={false} loadMinimalSize={2} loadMinimalLoader={<ActivityIndicator />} showsPagination={false} index={this.index} loadMinimal={true} key={this.state.homeData.length} style={styles.wrapper} onIndexChanged={(i) => this.handlePaging(i)} loop={false} >
-              {this.state.homeData.map((slideData, index) => (
-                <View key={index} style={styles.slide1}>
-                  {slideData.loading != undefined ? (
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "black" }} >
-                      <ActivityIndicator />
-                    </View>
-                  ) : (
-                      <HomeBox backgroundColorForSocial={colorGetterFromProps.white} home={true} key={index} ch={slideData} index={index} hideDesc={true} containerWidth={this.state.containerWidth} containerHeight={this.state.containerHeight} navigation={this.props.navigation} />
-                    )}
-                </View>
-
-              ))}
-            </Swiper>
-            {/* {this.state.itemData.call(this)} */}
-            {
-                <View style={{ flex: 0.1, justifyContent: "center", alignItems: "center", backgroundColor: "black" }} >
-                  <ActivityIndicator />
-                </View>
-              
-            }
-          </View>
-        </Viewport.Tracker>
-
-        )
-          : (
-            <Loader />
-          )}
->>>>>>> d6bf014ce1babfb211605f10c2be7aabba58cf0c
       </SafeAreaView>
     );
   }
