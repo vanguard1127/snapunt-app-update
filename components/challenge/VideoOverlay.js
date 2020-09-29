@@ -34,21 +34,18 @@ const PRE_TRIGGER_RATIO = -0.4
   }
 
   pauseVideo(){
-    console.log("Paued Video");
     if(this.playbackObject) {
       this.playbackObject.stopAsync()
     }
   }
 
   playVideo(){
-    console.log("Played Video");
     if(this.playbackObject) {
       this.playbackObject.playAsync()
     }
   }
 
   handlePlaying = (isVisible) => {
-    console.log('handle playing');
     console.log(isVisible)
     isVisible ? this.playVideo() : this.pauseVideo();
   }

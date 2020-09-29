@@ -16,7 +16,7 @@ import {
   StatusBar,
   TouchableOpacity
 } from 'react-native';
-import { Icon } from 'native-base';
+import { Icon } from "native-base"
 import { connect } from 'react-redux';
 import { getHomeData } from '../../store/actions/HomeActions';
 import { userSelector } from '../../store/selectors/UserSelector';
@@ -26,39 +26,40 @@ import Loader from '../../components/Loader';
 import { addHeaderRightNavigator } from '../../helpers';
 import { ActivityIndicator, Badge, Avatar } from 'react-native-paper';
 import { homeService } from '../../services/HomeService';
-import Swiper from 'react-native-swiper';
+import Swiper from 'react-native-swiper'
 import { NavigationEvents } from 'react-navigation';
-import { Viewport } from '@skele/components';
+import { Viewport } from '@skele/components'
 import { TextButton, RoundButton } from '../../components/shared/Button/Button';
 import GlobalStyles from '../../constants/GlobalStyles';
 import { normalizeFont, addPrefix } from '../../helpers/CommonMethods';
 import Social from '../../components/shared/Challenge/Social';
-import normalize from 'react-native-normalize';
+import normalize from "react-native-normalize";
 let colorGetterFromProps = {};
 let darkMode = false;
 
 class HomeScreen extends React.Component {
+
   myCustomAnimatedValue = new Animated.Value(0);
-  index = 0;
-  loading = true;
-  newData = [];
+  index = 0
+  loading = true
+  newData = []
 
   static navigationOptions = ({ navigation }) => {
-    const rightIcon = addHeaderRightNavigator(navigation);
+    const rightIcon = addHeaderRightNavigator(navigation)
     return {
       title: 'Sn△pHunt',
       headerBackTitle: null,
       ...rightIcon,
       headerTitleStyle: {
-        fontFamily: 'Merriweather',
-        fontWeight: '700',
-        fontStyle: 'italic'
+        fontFamily: "Merriweather",
+        fontWeight: "700",
+        fontStyle: "italic"
       }
     };
   };
 
   UNSAFE_componentWillMount() {
-    this.props.navigation.setParams({ avatar: this.props.user.avatar });
+    this.props.navigation.setParams({ avatar: this.props.user.avatar })
   }
 
   state = {
@@ -102,30 +103,29 @@ class HomeScreen extends React.Component {
 
   async callAPI(req) {
     try {
-      var { data } = await homeService.fetchHomeData(req);
-      var homeData = data;
-      var offset = this.state.offset + 12;
-      var currentData =
-        this.state.homeData.length == 1 ? [] : this.state.homeData;
+      var { data } = await homeService.fetchHomeData(req)
+      var homeData = data
+      var offset = this.state.offset + 12
+      var currentData = this.state.homeData.length == 1 ? [] : this.state.homeData
 
       if (currentData.length > 1) {
         // remove loading screen
-        currentData.pop();
+        currentData.pop()
       }
       if (homeData.length == 0 || homeData.length < 12) {
-        var mergedData = [...currentData, ...homeData];
-        this.setState({ homeData: mergedData, offset: offset, dataEnd: true });
-        this.loading = false;
+        var mergedData = [...currentData, ...homeData]
+        this.setState({ homeData: mergedData, offset: offset, dataEnd: true })
+        this.loading = false
       } else if (currentData.length == 0) {
-        var mergedData = [...currentData, ...homeData, { loading: true }];
-        this.setState({ homeData: mergedData, offset: offset });
-        this.loading = false;
+        var mergedData = [...currentData, ...homeData, { loading: true }]
+        this.setState({ homeData: mergedData, offset: offset })
+        this.loading = false
       } else {
-        this.newData = [...currentData, ...homeData, { loading: true }];
-        this.loading = false;
+        this.newData = [...currentData, ...homeData, { loading: true }]
+        this.loading = false
       }
     } catch (err) {
-      alert(err);
+      alert(err)
     }
   }
 
@@ -155,36 +155,38 @@ class HomeScreen extends React.Component {
   // }
 
   handleFocus() {
-    this.setState({ homeData: [], focus: true });
-    this.index = 0;
-    this.newData = [];
-    const data = { offset: 0, limit: this.state.limit };
-    this.callAPI(data);
+    this.setState({ homeData: [], focus: true })
+    this.index = 0
+    this.newData = []
+    const data = { offset: 0, limit: this.state.limit }
+    this.callAPI(data)
   }
 
   // componentWillMount(){
   //   // StatusBar.setBarStyle('light-content', true);
   // }
 
+<<<<<<< HEAD
   handlePaging(index) {    
     var data = this.state.homeData;
     if (data.length - 8 == index && !this.state.dataEnd && !this.loading) {
+=======
+  handlePaging(index) {
+    var data = this.state.homeData
+    if ((data.length - 8) == index && !this.state.dataEnd && !this.loading) {
+>>>>>>> d6bf014ce1babfb211605f10c2be7aabba58cf0c
       // var lastFiveIndex = data.length - 5
       //  if(lastFiveIndex == index){
       // run load more here
-      this.loading = true;
-      this.index = index;
-      this.callAPI({ limit: this.state.limit, offset: this.state.offset });
+      this.loading = true
+      this.index = index
+      this.callAPI({ limit: this.state.limit, offset: this.state.offset })
     } else {
       // this.setState({ index: index })
-      this.index = index;
+      this.index = index
       if (this.newData.length > 0) {
-        this.setState({
-          homeData: this.newData,
-          offset: this.state.offset + 12,
-          itemData: this.renderDataView(this.index)
-        });
-        this.newData = [];
+        this.setState({ homeData: this.newData, offset: this.state.offset + 12, itemData: this.renderDataView(this.index) })
+        this.newData = []
       }
     }
     // }
@@ -205,15 +207,16 @@ class HomeScreen extends React.Component {
   // }
 
   renderDataView(index) {
-    var data = this.state.homeData;
+    var data = this.state.homeData
     var item_data;
     if (!index) {
-      item_data = data[0];
-    } else {
-      item_data = data[index];
+      item_data = data[0]
+    }
+    else {
+      item_data = data[index]
     }
 
-    console.log(data.length);
+    console.log(data.length)
     // return (
     //   <View style={{
     //     flex: 1, alignItems: "center", height: normalize(300, "height"), position: "absolute", bottom: normalize(80, "height")
@@ -259,19 +262,18 @@ class HomeScreen extends React.Component {
     //     </View>
     //   </View>
     // )
+
   }
 
   render() {
-    let props = this.props;
+    let props = this.props
     return (
-      <SafeAreaView
-        style={styles.container}
-        onLayout={event => {
-          var { x, y, width, height } = event.nativeEvent.layout;
-          console.log(height, width);
-          this.setState({ containerHeight: height, containerWidth: width });
-        }}
-      >
+      <SafeAreaView style={styles.container} onLayout={(event) => {
+        var { x, y, width, height } = event.nativeEvent.layout;
+        console.log(height, width)
+        this.setState({ containerHeight: height, containerWidth: width })
+      }}>
+
         <NavigationEvents
           onDidFocus={payload => this.handleFocus()}
           onWillBlur={payload => this.setState({ focus: false })}
@@ -306,6 +308,7 @@ class HomeScreen extends React.Component {
             contentContainerStyle={{ flexGrow: 1 }}
           /> */}
 
+
         {/* <Swiper horizontal={false} key={this.state.homeData.length} index={this.state.index} style={styles.wrapper} onIndexChanged={(i) => this.handlePaging(i)} loop={false} >
             {this.state.homeData.map((slideData, index) => (
               <View key={index} style={styles.slide1}>
@@ -319,6 +322,7 @@ class HomeScreen extends React.Component {
             </View>
             ))}
           </Swiper> */}
+
 
         {/* <ParallaxSwiper
           vertical={true}
@@ -347,6 +351,7 @@ class HomeScreen extends React.Component {
        
       </ParallaxSwiper> */}
 
+<<<<<<< HEAD
         {this.state.focus ? (
             <View style={{ flex: 1 }}>
               <View style={styles.StickToTop}>
@@ -424,6 +429,42 @@ class HomeScreen extends React.Component {
         ) : (
           <Loader />
         )}
+=======
+
+        {this.state.focus ? (<Viewport.Tracker>
+          <View style={{ flex: 1 }}>
+            <View style={styles.StickToTop}>
+              <Text style={{ fontSize: normalizeFont(38), fontWeight: "500", color: "rgba(255,255,255,0.8)", marginTop: normalize(15), fontStyle: "italic" }}>SnΔpHunt</Text>
+            </View>
+            <Swiper scrollEventThrottle={16} horizontal={false} loadMinimalSize={2} loadMinimalLoader={<ActivityIndicator />} showsPagination={false} index={this.index} loadMinimal={true} key={this.state.homeData.length} style={styles.wrapper} onIndexChanged={(i) => this.handlePaging(i)} loop={false} >
+              {this.state.homeData.map((slideData, index) => (
+                <View key={index} style={styles.slide1}>
+                  {slideData.loading != undefined ? (
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "black" }} >
+                      <ActivityIndicator />
+                    </View>
+                  ) : (
+                      <HomeBox backgroundColorForSocial={colorGetterFromProps.white} home={true} key={index} ch={slideData} index={index} hideDesc={true} containerWidth={this.state.containerWidth} containerHeight={this.state.containerHeight} navigation={this.props.navigation} />
+                    )}
+                </View>
+
+              ))}
+            </Swiper>
+            {/* {this.state.itemData.call(this)} */}
+            {
+                <View style={{ flex: 0.1, justifyContent: "center", alignItems: "center", backgroundColor: "black" }} >
+                  <ActivityIndicator />
+                </View>
+              
+            }
+          </View>
+        </Viewport.Tracker>
+
+        )
+          : (
+            <Loader />
+          )}
+>>>>>>> d6bf014ce1babfb211605f10c2be7aabba58cf0c
       </SafeAreaView>
     );
   }
@@ -434,8 +475,8 @@ const mapStateToProps = state => {
     user: userSelector(state),
     // homeDataSuccess: state.homeReducer.homeDataSuccess,
     // homeData: state.homeReducer.homeData,
-    color: (colorGetterFromProps = state.userReducer.Color),
-    darkMode: (darkMode = state.userReducer.DarkMode)
+    color: colorGetterFromProps = state.userReducer.Color,
+    darkMode: darkMode = state.userReducer.DarkMode,
   };
 };
 
@@ -450,11 +491,11 @@ export default connect(
 
 const styles = StyleSheet.create({
   wrapper: {
-    zIndex: 1
+    zIndex: 1,
   },
   container: {
     flex: 1,
-    backgroundColor: 'black'
+    backgroundColor: "black",
     // borderWidth: 1,
     // borderColor: "red"
     // paddingTop: StatusBar.currentHeight
@@ -464,45 +505,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   item: {
-    width: '48%',
+    width: "48%",
     marginTop: 20,
 
     marginRight: 5
   },
   postContainer: {
-    alignItems: 'center'
+    alignItems: "center"
   },
   clapBox: {
     marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center"
   },
   slide1: {
-    flex: 1
+    flex: 1,
   },
   backgroundImage: {
     flex: 1
   },
   foregroundTextContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent"
   },
   foregroundText: {
     fontSize: 34,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: 0.41,
-    color: 'white'
+    color: "white"
   },
 
   iconAndText: {
     fontSize: normalizeFont(15),
     color: Colors.light_ash_white,
-    fontWeight: '100'
+    fontWeight: "100"
   },
   icon: {
     fontSize: normalizeFont(20),
@@ -513,21 +554,21 @@ const styles = StyleSheet.create({
   badgeText: {
     color: Colors.light_ash_white,
     fontSize: normalize(15),
-    marginTop: normalize(5, 'height'),
-    fontWeight: '500',
+    marginTop: normalize(5, "height"),
+    fontWeight: "500",
     margin: 8
   },
   StickToTop: {
     height: 10,
     margin: 8,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 10,
     backgroundColor: 'transparent',
     color: Colors.white,
     borderRadius: 40,
-    borderColor: 'transparent',
+    borderColor: "transparent",
     position: 'absolute',
-    shadowColor: 'rgba(0,0,0,0.02)',
+    shadowColor: "rgba(0,0,0,0.02)",
     elevation: 0.2
   }
 });
