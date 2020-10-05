@@ -18,7 +18,7 @@ let colorGetterFromProps = {};
 let darkMode = false;
 export default class CreatePostForm extends React.Component {
   state = {
-    thumb: null,
+    thumb: "",
     loaded: false,
     featured: false
   };
