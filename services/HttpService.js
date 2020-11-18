@@ -5,6 +5,7 @@ import config from '../config';
 
 class HttpService {
   constructor(options = {}) {
+    console.log('Url = ' + options.baseURL);
     this.client = axios.create(options);
     this.client.interceptors.response.use(this.handleSuccessResponse, this.handleErrorResponse);
     this.unauthorizedCallback = () => {};

@@ -78,6 +78,7 @@ class AuthService extends ApiService {
   };
 
   login = async loginData => {
+    console.log("loginData = " + JSON.stringify(loginData));
     const { data } = await this.apiClient.post(ENDPOINTS.LOGIN, loginData);
     await this.createSession(data);
     return data;

@@ -112,6 +112,7 @@ class HomeBox extends React.Component {
 
   render() {
     var props = this.props
+    console.log("Post Home Rrender = " + JSON.stringify(props));
     const customCircle = props.customCircle != undefined ? true : false
     const avatarWidth = props.avatarWidth != undefined ? props.avatarWidth : 40
     const avatarHeight = props.avatarHeight != undefined ? props.avatarHeight : 40
@@ -127,7 +128,7 @@ class HomeBox extends React.Component {
     var height = props.containerHeight
     var width = props.containerWidth
 
-
+    console.log("Props Media = " + props.ch.media);
     return (
 
       <View style={{ flex: 1 }} >

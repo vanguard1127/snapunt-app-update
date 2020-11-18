@@ -59,6 +59,7 @@ class HomeScreen extends React.Component {
   };
 
   UNSAFE_componentWillMount() {
+    console.log("Home Screen");
     this.props.navigation.setParams({ avatar: this.props.user.avatar })
   }
 
@@ -104,6 +105,7 @@ class HomeScreen extends React.Component {
   async callAPI(req) {
     try {
       var { data } = await homeService.fetchHomeData(req)
+      console.log("Home Data = " + JSON.stringify(data));
       var homeData = data
       var offset = this.state.offset + 12
       var currentData = this.state.homeData.length == 1 ? [] : this.state.homeData
@@ -114,13 +116,16 @@ class HomeScreen extends React.Component {
       }
       if (homeData.length == 0 || homeData.length < 12) {
         var mergedData = [...currentData, ...homeData]
+        console.log("MergedData = " + JSON.stringify(mergedData));
         this.setState({ homeData: mergedData, offset: offset, dataEnd: true })
         this.loading = false
       } else if (currentData.length == 0) {
+        console.log("ab");
         var mergedData = [...currentData, ...homeData, { loading: true }]
         this.setState({ homeData: mergedData, offset: offset })
         this.loading = false
       } else {
+        console.log("ac");
         this.newData = [...currentData, ...homeData, { loading: true }]
         this.loading = false
       }

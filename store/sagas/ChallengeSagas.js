@@ -1,4 +1,5 @@
 import { saveChallengeSuccess, saveChallengeError, addClapSuccess, addClapError, addCommentSuccess, addCommentError, getCommentsSuccess, getCommentsError, setComments, clappedUsersSuccess, setClappedUsers, editPostSuccess, setPinnedData } from "../actions/ChallengeActions";
+import { setGlobalError, setSocialLoginError } from '../actions/ErrorActions';
 import { challengeService } from "../../services/ChallengeService";
 import { call, put } from 'redux-saga/effects';
 import { setLoader, setRefreshLoading, setFlashMessage } from '../actions/LoaderAction';
@@ -10,6 +11,7 @@ export function* saveChallenge({ payload }) {
       yield put(setLoader(true));
       // yield(put(setLoadingText("Posting Challenge")))
       var {data} = yield call(challengeService.saveChallenge , payload);
+      conso
       yield put(setUpdatedUser(data))
       yield put(saveChallengeSuccess(true));
       if(payload.clearData != undefined){
@@ -27,9 +29,11 @@ export function* saveChallenge({ payload }) {
     } catch (error) {
         alert(error)
         console.log(error)
-      if (error.response.status === 400) {        
+      if (error.response.status === 400) {   
+             
         yield put(saveChallengeError(true));
       } else {
+        console.log("Save Challenge Error");
         yield put(setGlobalError(true));
       }
     } finally {

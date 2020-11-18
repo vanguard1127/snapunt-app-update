@@ -27,6 +27,7 @@ class PostPreview extends React.Component {
   }
 
   render() {
+    console.log("Post Preview Rrender = " + JSON.stringify(props));
     return (
       <View style={styles.container} onLayout={(event) => {
         var { x, y, width, height } = event.nativeEvent.layout;
